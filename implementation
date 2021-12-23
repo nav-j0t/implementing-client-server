@@ -193,7 +193,14 @@ I have also included the screenshots I would like to see to demonstrate to me th
 
 
 
+14. Set up a Web Site for Fitter Snacker
 
+    a. On server VM#1, add the Web Server (IIS) role as shown in an upcoming class.
+    b. Create a website called www.fittersnacker.com.
+    c. Create a web page for Fitter Snacker that customers will see when they type in - www.fittersnacker.com.
+    d. I am looking for a nice web page, so be creative and thoughtful when creating this web page. 
+    e. Testing webpage by accessing www.fittersnacker.com with Internet Explorer from server VM#2.
+    f. server VM#2: screenshot of Fitter Snacker home page with Internet Explorer on server VM#2.
 
 
 
