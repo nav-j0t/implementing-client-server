@@ -1,0 +1,201 @@
+IMPLEMENTATION
+
+Below is the recommended order of implementation that will likely give you the least problems although you can choose to implement in any order you chose.
+I have also included the screenshots I would like to see to demonstrate to me that you have successfully implemented this project.
+
+
+1. Set up the Host-Only Network on VirtualBox
+
+    a. Set up the Host-Only Network with the network address specified in the requirements
+    b. Please make sure the VirtualBox DHCP Server is disabled as you will be installing the DHCP
+       role on server VM#2
+    c. VirtualBox: screenshot to show Host-Only DHCP Server settings.
+    
+    
+2. Build server VM#1
+
+    a. Create a new VM in virtual box and install Windows Server 2012 R2 (full GUI)
+    b. server VM#1: Take a screenshot to show your server VM#1 and its hardware settings.
+    c. Set the static IP address and host name as specified in the requirements
+    d. Ensure the necessary services are running and the necessary firewall settings are configured
+    e. Install the File Server Role
+    f. Install AD DS with DNS – setting the domain to corp.fittersnacker.com
+        i. Ensure you set the preferred DNS server to server VM#1 in the IPV4 settings
+        ii. Set the NetBIOS name to FITTER
+    g. server VM#1: screenshot of the login screen that shows the NetBIOS name\Administrator and the prompt for the password field.
+    
+    
+3. Build server VM#2
+
+    a. Create a new VM in virtual box and install Windows Server 2012 R2 (full GUI)
+    b. Set the static IP address and host name as specified in the requirements
+    c. Ensure you set the preferred DNS server to server VM#1 in the IPV4 settings
+    d. Ensure the necessary services are running and the necessary firewall settings are configured
+    e. Install the File Server Role
+
+
+4. Verification
+    a. It is important that you verify your setup throughout the build process so that you can correct any issues early.
+    b. Additionally, you should take VirtualBox Snapshots along the way when you have a known good state. Then if you run into problems later on, you don’t have to start over and you can simply start from the last known good state.
+    c. From server VM#1, verify that you can ping server VM#2 and see it in File Explorer->Network
+    d. From server VM#2, verify that you can ping server VM#1 and see it in File Explorer->Network
+    
+    
+5. Join server VM#2 to the domain
+
+    a. On server VM#2, join the fittersnacker.com domain b.
+    b. server VM#1: screenshot of the login screen that shows the NetBIOS name\Administrator and the prompt for the password field.
+ 
+ 
+6. Install and configure DHCP on server VM#2 from server VM#1
+
+    a. On server VM#1, add server VM#2 to the list of servers to manage
+    b. server VM#1: Take a screenshot of the list of Servers in Server Manager showing both servers listed.
+    c. On server VM#1, add the DHCP Server role to server VM#2
+    d. Configure Windows Firewall on server VM#2 to allow use of DHCP console from server VM#1
+    e. Add Remote Server Administration Tools for DHCP Server Tools on server VM#1
+    f. Run the DHCP console application from server VM#1 and add server VM#2
+    g. Create the DHCP scope from the DHCP console on server VM#1 for server VM#2, setting the
+    host ID range from 180 to 200
+    h. server VM#1: screenshot of the DHCP console on server VM#1 that shows the newly added Scope in the middle pane complete with the Scope name and IP address for the scope.
+    i. On server VM#2, verify the scope you created on server VM#1 shows up on server VM#2 by running the DHCP console on server VM#2
+    j.server VM#2: Take a screenshot of the DHCP console on server VM#2 that shows the newly added Scope in the middle pane complete with the Scope name and IP address for the scope
+
+
+7. Build client VM:
+
+    a. Create a new VM in virtual box and install Windows 10 32-bit or Windows 7 32-bit
+    b. Set the IPV4 address to automatic and host name as specified in the requirements
+    c. Ensure you set the preferred DNS server to server VM#1 in the IPV4 settings
+    d. Ensure the necessary services are running and the necessary firewall settings are configured
+    e. Join the client VM to the corp.fittersnacker.com domain
+    f. client VM: screenshot of the Command Prompt that shows the output of ipconfig /all with the new IP address of the client VM (in the proper range of 180 to 200), that it is part of the domain, and that the IP addresses of the DNS and DHCP servers are correct as configured. 
+
+
+8. Configure DNS
+
+    a. Configure the forward and reverse lookup on server VM#1
+    b. Verify nslookup works properly on server VM#2 for both servers and the client
+    c.  server VM#2: screenshot of the output of the Command Prompt on server VM#2 showing that when running nslookup, the Server is listed with the FQDN of your DNS server, and that Forward Lookup and the Reverse Lookup is successful for all active computers on your network
+
+
+9. Create Domain Users
+
+    a. On server VM#1, create all 37 domain users (I know, it is a lot!) using the AD Users and Computers tool
+        i. Use the supplied organizational chart
+        ii. Consider creating a Default User Template as demonstrated in class – that will speed up
+        this process
+        iii. The format of the user login ID should be firstname.lastname as we did in our labs/assignments
+    b. server VM#1: screen shot of all the users you have added in AD Users and Computers. You can sort the list of users by clicking on the Type column, so all the users are listed together. You may have to take several screenshots to capture all the users.
+    c. All the users from the IT functional group should have administrative rights. Add those users to the Domain Admins security group.
+    d.  server VM#1: screen shot of all the members of the Domain Admins security group to show that you have added all the IT user accounts to the group
+    
+    
+10. Create Organizational Units
+
+    a. Fitter Snacker has plans to expand into the USA but remain in North America. So, you will create the OUs with that in mind. However, you will create a root OU called Worldwide to allow for future expansion.
+    b. Using server VM#1, The OU structure should look like the following: 
+
+
+                -Worldwide
+                    - North America
+                        - canada
+                            - BC
+                                - Richmond
+                                    - IT
+                                    - SCM
+                                        - Logistics
+                                        - Manufacturing
+                                - Vancouver  
+                                    - AF
+                                    - HR
+                                    - MKT
+                                        - Upstream Marketing
+                                        - Downstream Marketing
+                                        - Customer Support 
+                                    -SD
+                                        - SD Direct
+                                        - SD Wholesale
+                          - USA (Future)
+                          - Seattle (Future)
+
+
+    c.  server VM#1: screenshot of the AD Users and Computers window that shows all the OUs you have created in the left-hand folder tree. You will have to expand all the OUs so you can see all the OUs and you will need multiple screenshots if all the OUs do not fit in the window
+
+
+11. Create Security Groups 
+
+    a.	All the security groups will be prefixed with “fs_” so that they will be all listed together when looking at them in the AD Users and Computers application 
+   
+   b.	On server VM#1, create the Global Groups and the following members: 
+          i.	fs_Executive – members are the CEO, CFO, CIO, CMO 
+          ii.	fs_AF – all employees in A/F functional group, CFO 
+          iii.	fs_HR – all employees in HR functional group, CFO 
+          iv.	fs_IT – all employees in IT functional group, CIO 
+          v.	fs_SCM – all employees in SCM functional group, CIO 
+          vi.	fs_Logistics – all employees in Logistics functional group, CIO, Sr. Mgr. SCM 
+          vii.	fs_Manufacturing – all employees in Manufacturing functional group, CIO, Sr. Mgr. SCM 
+          viii.	fs_MKT – all employees in MKT functional group, CMO 
+          ix.	fs_Upstream – all employees in Upstream Marketing, CMO, Sr. Mgr. MKT 
+          x.	fs_Downstream – all employees in Downstream Marketing, CMO, Sr. Mgr. MKT 
+          xi.	fs_CustomerSupport – all employees in Customer Support, CMO, Sr. Mgr. MKT 
+          xii.	fs_SD – all employees in SD functional group, CMO 
+          xiii.	fs_SalesDirect – all employees in Direct Sales, CMO, Sr. Mgr. SD 
+          xiv.	fs_SalesWholesale – all employees in Wholesales, CMO, Sr. Mgr. SD 
+          
+    c. On server VM#1, create the Domain Local Groups and the following members: 
+        fs_ExecutiveAccess – members are fs_Executive global group fs_
+        AFAccess – members are fs_AF, fs_Executive global groups 
+        fs_HRAccess – members are fs_HR, fs_Executive global groups 
+        fs_ITAccess – members are fs_IT global group 
+        fs_SCMAccess – members are fs_SCM global groups 
+        fs_MKTAccess – members are fs_MKT, fs_Executive 
+        fs_SDAccess – members are fs_SD, fs_MKT, fs_Executive 
+
+    d.	server VM#1: screenshot of all the security groups (global and domain local) you  added. You may need multiple screenshots if all the security groups do not fit in the window. 
+    e.	server VM#1: screenshot of the fs_Manufacturing global group showing its members. 
+    f.	server VM#1:creenshot of the fs_SDAccess domain local group showing its members.
+
+
+12. Create Shares 
+
+    a.	Create shares for all the main functional groups on server VM#2 on C:\FitterSnackerShares 
+    
+        1.	Common – everyone can access, create a text file common.txt
+        2.	HR – HR and Executives can access, create a text file HR.txt
+        3.	AF – AF and Executives can access, create a text file AF.txt 
+        4.	IT – IT can access, create a text file IT.txt
+        5.	SCM – SCM can access, create a text file SCM.txt
+        6.	MKT – MKT and Executives can access, create a text file MKT.txt SD – SD and Executives can access, create a text file SD.txt 
+        7.	SD – SD and Executives can access, create a text file SD.txt 
+
+    b.	client VM: login as the CEO (Arnold Terminator) and access the IT share, screenshot to  show the Command Prompt with the whoami output and either (1) File Explorer with the file  listed (indicating you have permission to the folder) or (2) an error message if you do not have permission to access to the share. 
+    c.	client VM: login as the Sr. Mgr. IT (Billy Kidd) and access the IT share,  screenshot to  show the Command Prompt with the whoami output and either (1) File Explorer with the file  listed (indicating you have permission to the folder) or (2) an error message if you do not have permission to access to the share. 
+    d. 	client VM: login as Alvin Smith from Manufacturing and access the SCM share, take a screenshot to show the Command Prompt with the whoami output and either 
+    
+      (1) File Explorer - with the file listed (indicating you have permission to the folder) OR
+      (2) an error message - if you do not have permission to access to the share 
+      
+      
+ 
+ 13.  Set up the Print Server role on server VM#2 from server VM#1
+ 
+    a. On server VM#1, add the Print Server role to server VM#2
+    b. Add Remote Server Administration Tools for Print and Document Services Tools on serverVM#1 (like you did for DHCP)
+    c. Run the Print Management console application from server VM#1, right-click on Print Servers and add server VM#2
+    d. Add a printer for the Executives:
+        i. Select server VM#2 in Print Management, and right-click on Printers and select Add Printer, select Add a new printer using an existing port, select Install a new driver, and select any printer from the list presented. For the Printer Name, type in “Executive Printer”
+    e. Add a printer for AF using the same process for the Executives, but call it “AF Printer”
+    f. Add a printer for everyone else using the same process, but call it “Common Printer”
+    g. Go to server VM#2, run the Print Management console application, select Print Servers, select server VM#2, and select Printers to verify that the three printers have been added.
+    h. server VM#2: screenshot of the Print Management console on server VM#2 that shows
+     the newly added printers.
+
+
+
+
+
+
+
+
+
