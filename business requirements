@@ -1,0 +1,42 @@
+You have met with Norman Geekly (CIO) and Billy Kidd (Sr. Manager, IT) and identified the requirements for the client/server environment.
+Implementation Environment: You will utilize Oracle’s VirtualBox hypervisor as the main platform for this project.
+
+Host-Only Network: You will set up Host-Only Network in VirtualBox with an IPV4 network address of 192.168.1.1/24 and an IPV4 network mask of 255.255.255.0. Please make sure the VirtualBox DHCP server is disabled as you will be installing the DHCP role on one of the server VMs.
+
+Domain: Fitter Snacker has registered the domain fittersnacker.com. You will use corp.fittersnacker.com in your environment when setting up AD DS and DNS. Use FITTER as the NetBIOS domain name.
+
+Servers: You will implement two virtual servers from scratch (don’t reuse the ones from previous labs/assignments) using Windows Server 2012 R2 with the following specifications:
+
+1. server VM#1:
+
+    • Name: fsserver1
+    • OS: Windows Server 2012 R2, Full GUI
+    • Memory: 1536 MB (min 1024 MB))
+    • Disk: 30 GB
+    • Static IP Address: 192.168.1.5
+    • Roles:
+    • Directory Server (AD DS)
+    • DNS server
+    • File server
+    • Web Server
+    
+2. server VM#2:
+
+    • Name: fsserver2
+    • OS: Windows Server 2012 R2, Full GUI
+    • Memory: 1536 MB (min 1024 MB)
+    • Disk: 30 GB
+    • Static IP Address: 192.168.1.6
+    • Roles:
+    • DHCP server
+    • File server
+    • Print server
+    
+Clients – Although Fitter Snacker will have many client computers, you will implement one virtual client from scratch (don’t reuse the one from previous labs/assignments) using Windows 10 32-bit or Windows 7 32-bit with the following specifications:
+
+    • Name: fsclient1
+    • OS: Windows 10 32-bit or Windows 7 32-bit
+    • Memory: 768 MB (min 512 MB)
+    • Disk: 20 GB
+    • IP Address: Automatically assigned by DHCP server
+
